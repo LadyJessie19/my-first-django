@@ -1,7 +1,6 @@
 # 🛍️ Borcelle - A Beauty Store with Reviews System 💖✨
 
 ![Screenshot 1](./assets/first.png)
-![Screenshot 2](./assets/second.png)
 ![Screenshot 3](./assets/third.png)
 
 Welcome to **Borcelle**, a fictional beauty store built with Django! 🎉 This is my very first Django project, where I explored the framework while working on something I love: **makeup and beauty products!** 💄💅
