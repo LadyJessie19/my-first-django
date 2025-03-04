@@ -1,0 +1,232 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliações - Borcelle Cosméticos</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/b-logo.jpg' %}">
+
+    <style>
+        .review-card {
+            background-color: #fff;
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .star {
+            color: #ffd700;
+            /* Estrelas douradas */
+            font-size: 1.2rem;
+            margin-right: 2px;
+        }
+
+        .star.filled {
+            color: #ffd700;
+        }
+
+        .star:not(.filled) {
+            color: #ccc;
+            /* Estrelas não preenchidas em cinza claro */
+        }
+
+        .text-muted {
+            color: #6c757d !important;
+        }
+
+        .bg-light {
+            background-color: #f8f9fa;
+        }
+
+        .btn-primary {
+            background-color: #3c2f2f;
+            /* Marrom escuro da paleta Borcelle */
+            border-color: #3c2f2f;
+        }
+
+        .btn-primary:hover {
+            background-color: #a6d5a8;
+            /* Verde claro da paleta Borcelle */
+            border-color: #a6d5a8;
+        }
+
+        footer {
+            color: #fff;
+            background-color: #3c2f2f;
+            /* Marrom escuro */
+        }
+
+        footer h5 {
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        footer p,
+        footer a {
+            color: #fff;
+            opacity: 0.8;
+        }
+
+        footer a:hover {
+            color: #a6d5a8;
+            /* Verde claro nos hover */
+            text-decoration: underline;
+        }
+
+        footer .bi {
+            font-size: 1.2rem;
+        }
+
+        footer .list-unstyled li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+    <!-- Navbar (Opcional, apenas para consistência) -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'images/borcelle-logo.png' %}" alt="logo-borcelle" width="300"
+                    style="border-radius: 14px;" class="d-inline-block align-text-top">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">Sobre nós</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">Entre em contato</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'reviews'%}">Avaliações</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link disabled dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Catálogo de produtos
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Maquiagem importada</a></li>
+                            <li><a class="dropdown-item" href="#">Perfumes e fragrâncias</a></li>
+                            <li><a class="dropdown-item" href="#">Cuidados com a pele</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Buscar produto" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Buscar</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Seção de Avaliações -->
+    <section class="py-5">
+        <div class="container">
+            <h1 class="text-center mb-5 text-dark">O que nossos clientes dizem</h1>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for review in reviews %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm border-0 review-card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-person-circle text-muted me-2" style="font-size: 2rem;"></i>
+                                <h5 class="card-title mb-0">{{ review.name|default:"Anônimo" }}</h5>
+                            </div>
+                            <p class="card-text text-muted">{{ review.reviewText }}</p>
+                            <div class="star-rating mb-2">
+                                {% with '' as dummy %}
+                                {% for i in "xxxxx"|make_list %}
+                                {% if forloop.counter <= review.stars %} <span class="star filled">★</span>
+                                    {% else %}
+                                    <span class="star">★</span>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% endwith %}
+                            </div>
+                            <p class="card-text text-muted small">
+                                <i class="bi bi-calendar-check"></i> {{ review.date|date:"d/m/Y H:i" }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12 text-center">
+                    <p class="text-muted">Nenhuma avaliação encontrada.</p>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="text-center mt-5">
+                <a href="{% url 'home' %}" class="btn btn-primary">Voltar para Home</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <!-- Coluna 1: Sobre a Empresa -->
+                <div class="col-md-4 mb-3">
+                    <h5>Borcelle Cosméticos</h5>
+                    <p>Transforme sua beleza com produtos naturais e sustentáveis, feitos com amor para cuidar de você e
+                        do planeta.</p>
+                    <p>© 2025 Borcelle Cosméticos. Todos os direitos reservados.</p>
+                </div>
+                <!-- Coluna 2: Contato -->
+                <div class="col-md-4 mb-3">
+                    <h5>Contato</h5>
+                    <p><i class="bi bi-geo-alt-fill"></i> Rua das Flores, 123, São Paulo, SP, Brasil</p>
+                    <p><i class="bi bi-envelope-fill"></i> contato@borcellecosmeticos.com</p>
+                    <p><i class="bi bi-telephone-fill"></i> (11) 1234-5678</p>
+                </div>
+                <!-- Coluna 3: Links Úteis -->
+                <div class="col-md-4 mb-3">
+                    <h5>Links Úteis</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white text-decoration-none">Política de Privacidade</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Termos de Uso</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Sobre Nós</a></li>
+                        <li><a href="{% url 'reviews' %}" class="text-white text-decoration-none">Avaliações</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Redes Sociais -->
+            <div class="row mt-3">
+                <div class="col text-center">
+                    <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white me-3"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-white me-3"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="text-white"><i class="bi bi-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
