@@ -41,7 +41,6 @@ I followed these amazing tutorials while building this project. A huge thank you
 
 Hi, I'm **Jessie M. Bentes**, a passionate developer exploring Django! 🚀👩‍💻
 
-📸 **My Profile Picture:**
 <img src="./assets/jessie.png" width="200px" />
 
 ## 🏡 Running the Project Locally
